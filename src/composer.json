@@ -1,0 +1,19 @@
+{
+    "name": "libert/kadoo_printer",
+    "type": "project",
+    "require": {
+        "mike42/escpos-php": "^4.0"
+    },
+    "license": "none",
+    "autoload": {
+        "psr-4": {
+            "Libert\\KadooPrinter\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Libert Assogba",
+            "email": "libertliboo@gmail.com"
+        }
+    ]
+}

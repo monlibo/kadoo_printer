@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
 require 'config.php';
 
 use Mike42\Escpos\Printer;
