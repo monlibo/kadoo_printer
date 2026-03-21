@@ -3,23 +3,15 @@
 
 function detecterImprimante()
 {
-    // Demander à Windows la liste des imprimantes via PowerShell
-    $output = shell_exec('powershell -command "Get-Printer | Select-Object -ExpandProperty Name"');
-
-    // Découper le résultat ligne par ligne
+    $output = shell_exec('powershell -command "Get-Printer | Where-Object {$_.Shared -eq $true} | Select-Object -ExpandProperty ShareName"');
     $lignes = explode("\n", $output);
-
     foreach ($lignes as $ligne) {
         $ligne = trim($ligne);
-
-        // Chercher une imprimante Epson TM
-        if (stripos($ligne, 'EPSON') !== false || stripos($ligne, 'TM') !== false) {
-            return $ligne;
+        if (!empty($ligne)) {
+            return $ligne; // Retourne le premier nom de partage trouvé
         }
     }
-
     return null;
 }
-$nomImprimante = detecterImprimante();
-error_log("Config - Imprimante : " . $nomImprimante);
-define('NOM_IMPRIMANTE', $nomImprimante);
+
+define('NOM_IMPRIMANTE', detecterImprimante());

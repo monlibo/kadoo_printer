@@ -198,9 +198,7 @@ if (!$donnees) {
 
 try {
     if (PHP_OS_FAMILY === 'Windows') {
-        // Forcer le spooler Windows à utiliser l'imprimante locale
-        shell_exec('net start spooler');
-        $connector = new WindowsPrintConnector("EPSON TM-T20III Receipt");
+        $connector = new WindowsPrintConnector(NOM_IMPRIMANTE);
     } else {
         $connector = new FilePrintConnector('/dev/usb/lp0');
     }
