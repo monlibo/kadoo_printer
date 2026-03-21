@@ -193,6 +193,13 @@ if (!$donnees) {
 
 try {
     if (PHP_OS_FAMILY === 'Windows') {
+        if (!NOM_IMPRIMANTE) {
+            echo json_encode([
+                'ok'      => false,
+                'message' => 'Aucune imprimante Epson détectée. Vérifiez que l\'imprimante est branchée et installée.'
+            ]);
+            exit;
+        }
         $connector = new WindowsPrintConnector(NOM_IMPRIMANTE);
     } else {
         $connector = new FilePrintConnector('/dev/usb/lp0');
