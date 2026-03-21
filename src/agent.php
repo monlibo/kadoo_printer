@@ -198,14 +198,12 @@ if (!$donnees) {
 
 try {
     if (PHP_OS_FAMILY === 'Windows') {
-        if (!NOM_IMPRIMANTE) {
-            echo json_encode([
-                'ok'      => false,
-                'message' => 'Aucune imprimante Epson détectée. Vérifiez que l\'imprimante est branchée et installée.'
-            ]);
-            exit;
-        }
-        $connector = new WindowsPrintConnector(NOM_IMPRIMANTE);
+        // Trouver le port USB de l'imprimante
+        $port = shell_exec('powershell -command "Get-Printer -Name \'' . NOM_IMPRIMANTE . '\' | Select-Object -ExpandProperty PortName"');
+        $port = trim($port);
+        error_log("Port imprimante : " . $port);
+        // Le port ressemble à : USB001 ou COM1
+        $connector = new FilePrintConnector("\\\\spool\\" . $port);
     } else {
         $connector = new FilePrintConnector('/dev/usb/lp0');
     }
