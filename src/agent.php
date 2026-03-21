@@ -13,6 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require 'vendor/autoload.php';
 require 'config.php';
 
+// DEBUG - à supprimer après
+$output = shell_exec('powershell -command "Get-Printer | Select-Object -ExpandProperty Name"');
+error_log("Imprimantes détectées : " . $output);
+error_log("Imprimante choisie : " . NOM_IMPRIMANTE);
+
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;

@@ -20,5 +20,6 @@ function detecterImprimante()
 
     return null;
 }
-
-define('NOM_IMPRIMANTE', 'EPSON TM-T20III');
+$nomImprimante = detecterImprimante();
+error_log("Config - Imprimante : " . $nomImprimante);
+define('NOM_IMPRIMANTE', $nomImprimante);
