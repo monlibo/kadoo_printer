@@ -178,7 +178,7 @@ function imprimerUnTicket(Printer $p, array $d, bool $copieClient = false)
     //$p->text("(" . $d['caissier'] . ")\n");
 
     // ── COUPE ────────────────────────────────
-    //$p->feed(2);
+    $p->feed(2);
     $p->cut(Printer::CUT_PARTIAL, 2);
 }
 
@@ -201,7 +201,7 @@ try {
     $p = new Printer($connector);
 
     imprimerUnTicket($p, $donnees, false);
-    //imprimerUnTicket($p, $donnees, true);
+    imprimerUnTicket($p, $donnees, true);
 
     $p->close();
 
