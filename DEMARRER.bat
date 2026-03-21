@@ -4,6 +4,7 @@ echo =============================
 echo   Agent Impression Kadoo
 echo   Ne pas fermer cette fenetre
 echo =============================
+net start spooler
 cd /d "C:\KadooPrinter\src"
 ..\php\php.exe -S localhost:8765 agent.php
 pause

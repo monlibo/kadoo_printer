@@ -198,12 +198,9 @@ if (!$donnees) {
 
 try {
     if (PHP_OS_FAMILY === 'Windows') {
-        // Trouver le port USB de l'imprimante
-        $port = shell_exec('powershell -command "Get-Printer -Name \'' . NOM_IMPRIMANTE . '\' | Select-Object -ExpandProperty PortName"');
-        $port = trim($port);
-        error_log("Port imprimante : " . $port);
-        // Le port ressemble à : USB001 ou COM1
-        $connector = new FilePrintConnector("\\\\spool\\" . $port);
+        // Forcer le spooler Windows à utiliser l'imprimante locale
+        shell_exec('net start spooler');
+        $connector = new WindowsPrintConnector("EPSON TM-T20III Receipt");
     } else {
         $connector = new FilePrintConnector('/dev/usb/lp0');
     }
