@@ -91,12 +91,12 @@ function imprimerUnTicket(Printer $p, array $d, bool $copieClient = false)
     $p->text(ligne("Client", $d['client']));
     $p->text(ligne("Tel", $d['telephone']));
 
-    if (!empty($d['email'])) {
-        $p->text(ligne("Email", $d['email']));
+    if ($d['contrat_code']) {
+        $p->text(ligne("Réf Contrat", $d['contrat_code']));
     }
 
-    if (!empty($d['contrat_code'])) {
-        $p->text(ligne("Contrat", $d['contrat_code']));
+    if (!empty($d['email'])) {
+        $p->text(ligne("Email", $d['email']));
     }
 
     //$p->feed(1);
@@ -125,7 +125,7 @@ function imprimerUnTicket(Printer $p, array $d, bool $copieClient = false)
     // ── RÉCAPITULATIF ────────────────────────
     $p->text(ligne("Montant total", $d['total'] . " FCFA"));
     $p->text(ligne("Montant remis", $d['montant_remis'] ?? "0 FCFA"));
-    $p->text(ligne("Reliquat",      $d['reliquat']      ?? "0 FCFA"));
+    $p->text(ligne("Reliquat",      $d['montant_rendu']      ?? "0 FCFA"));
     $p->text(ligne("Paiement",      $d['mode_paiement']));
     $p->feed(1);
 
