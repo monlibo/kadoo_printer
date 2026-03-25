@@ -39,20 +39,41 @@ function decouper($texte, $max = 32)
 
 function imprimerUnTicket(Printer $p, array $d, bool $copieClient = false)
 {
-
-    // ── LOGO ─────────────────────────────────
     if (!empty($d['logo'])) {
         $logoData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $d['logo']));
         $tmpFile  = tempnam(sys_get_temp_dir(), 'logo_') . '.png';
         file_put_contents($tmpFile, $logoData);
+
+        // ✅ Redimensionner avec GD
+        $srcImage = imagecreatefromstring($logoData);
+        $srcW = imagesx($srcImage);
+        $srcH = imagesy($srcImage);
+
+        $maxWidth = 200; // ✅ ajuste selon ta largeur d'imprimante (58mm ≈ 160px, 80mm ≈ 512px)
+        $ratio    = $maxWidth / $srcW;
+        $newW     = $maxWidth;
+        $newH     = (int)($srcH * $ratio);
+
+        $resized = imagecreatetruecolor($newW, $newH);
+
+        // Fond blanc (important pour les PNG transparents)
+        $white = imagecolorallocate($resized, 255, 255, 255);
+        imagefill($resized, 0, 0, $white);
+
+        imagecopyresampled($resized, $srcImage, 0, 0, 0, 0, $newW, $newH, $srcW, $srcH);
+        imagepng($resized, $tmpFile);
+        imagedestroy($srcImage);
+        imagedestroy($resized);
+
         try {
             $image = EscposImage::load($tmpFile, false);
             $p->setJustification(Printer::JUSTIFY_CENTER);
-            $p->bitImage($image);
+            $p->bitImage($image, Printer::IMG_DEFAULT); // ✅ pas de double width
             $p->feed(1);
         } catch (Exception $e) {
             // Continue sans logo
         }
+
         unlink($tmpFile);
     }
 
