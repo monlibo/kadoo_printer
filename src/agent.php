@@ -147,7 +147,20 @@ function imprimerUnTicket(Printer $p, array $d, bool $copieClient = false)
     $p->text(ligne("Montant total", $d['total'] . " FCFA"));
     $p->text(ligne("Montant remis", $d['montant_remis'] ?? "0 FCFA"));
     $p->text(ligne("Reliquat",      $d['montant_rendu']      ?? "0 FCFA"));
+
+    $p->text("--------------------------------\n");
+
     $p->text(ligne("Paiement",      $d['mode_paiement']));
+    if($d['cheque_number']){
+        $p->text(ligne("Numero de chèque",$d['cheque_number']));
+    }
+    if($d['cheque_date']){
+        $p->text(ligne("Date de chèque",$d['cheque_date']));
+    }
+    if($d['cheque_banque']){
+        $p->text(ligne("Banque :",$d['cheque_banque']));
+    }
+
     $p->feed(1);
 
     // ── TOTAL EN GRAS ────────────────────────
